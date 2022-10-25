@@ -11,31 +11,21 @@
     $userList_session = executeSelect($sql);
     $user_session = $userList_session[0];
     $avatar_session = $user_session['avatar'];
+    $id_session = $user_session['user_id'];
 
+    $fromid = $toid = '';
 
-    $id = $fullname = $username = $password = $email = $phonenumber = $role = $avatar =  '';
-    $id = '';
-    $done = 0;
-    if(isset($_GET['id'])){
-        $id = $_GET['id'];
-        $sql = 'SELECT * FROM users where user_id = '.$id;
-        $userList = executeSelect($sql);
-        $user = $userList[0];
-        $full_name = $user['full_name']; 
-        $user_name = $user['username']; 
-        $email = $user['email']; 
-        $avatar = $user['avatar'];
-        $phone_number = $user['phone_number']; 
-        $role_id = $user['role_id']; 
-        if(!empty($_POST)){
-            $email = $_POST['email'];
-            $phone_number = $_POST['phone-number'];
-            $sql = 'UPDATE users SET email = "'.$email.'", phone_number = "'.$phone_number.'" WHERE user_id = '.$id.';';
-            execute($sql);
-            header("Location: listUser.php");
-        }
-    }else{
-        $id = '';
+    if(isset($_GET['fromid']) && isset($_GET['toid'])){
+        $fromid = $_GET['fromid'];
+        $toid = $_GET['toid'];
+
+    } 
+    if(isset($_POST['submit'])){
+        $content = $_POST['content_message'];
+        $sql = 'INSERT INTO messenger (from_id, to_id, content) VALUES ('.$fromid.', '.$toid.', "'.$content.'");';
+        execute($sql);
+        header('Location:'.$_SERVER['PHP_SELF'].'?'.$_SERVER['QUERY_STRING']);
+        die;
     }
 ?>
 
@@ -50,50 +40,66 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="container">
-        <div class="mb-3">
-            <div style="float: left; margin-top: 27px;">
-                <a href="listUser.php"><button class="btn btn-success">Back</button></a>
-            </div>
-            <div style="float: right; margin-top: 27px;">
-                <img src="<?php echo $avatar_session;?>" alt="avatar" width="40px" height="40px">
-                <a href="profile.php"><button class="btn btn-success">Profile</button></a>
-                <a href="logout.php"><button class="btn btn-warning">Log out</button></a>
-            </div>
+<div>
+    <div style="margin-left:200px;margin-right:200px;">
+        <div style="float: left; margin-top: 27px;">
+            <a href="listUser.php"><button class="btn btn-success">Back</button></a>
         </div>
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                </br>
-                <h1 style="color:green;text-align:center;">Box Chat</h1>
-                </br>
-            </div>
-            <div class="panel-body">
-                <form method="post" action="">
-                    <div class="mb-3">
-                        <img src="<?php echo $avatar;?>" alt="avatar" width="200px" height="200px" style="border-radius:50%; margin: auto; display: block;">
-                    </div>  
-                    <div class="mb-3">
-                        <label for="usr" class="form-label">User name: </label>
-                        <input type="text" class="form-control" name="urs" require="true" value="<?=$user_name?>" disabled="disabled">
-                    </div>
-                    <div class="mb-3">
-                        <label for="full-name" class="form-label">Full name: </label>
-                        <input type="text" class="form-control" name="full-name" require="true" value="<?=$full_name?>" disabled="disabled">
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email address: </label>
-                        <input type="email" class="form-control" name="email" require="true" value="<?=$email?>">
-                    </div>
-                    <div class="mb-3">
-                        <label for="phone-number" class="form-label">Phone number: </label>
-                        <input type="tel" class="form-control" name="phone-number" require="true" value="<?=$phone_number?>">
-                    </div>
-                    <div class="mb-3">
-                        <input class="btn btn-success" type="submit" value="Update">
+        <div style="float: right; margin-top: 27px;">
+            <img src="<?php echo $avatar_session;?>" alt="avatar" width="40px" height="40px">
+            <a href="profile.php"><button class="btn btn-success">Profile</button></a>
+            <a href="logout.php"><button class="btn btn-warning">Log out</button></a>
+        </div>
+        <div>
+            </br>
+            <h1 style="color:green;text-align:center;">Box Chat</h1>
+            </br>
+        </div>
+    </div>
+
+
+    <div class="container py-5 px-4">
+        <div class="row rounded-lg overflow-hidden shadow">
+            <div class="col-12 px-0">
+                <div class="px-4 py-5 chat-box bg-white">
+                    <?php 
+                    $sql = 'SELECT * FROM messenger WHERE (from_id = '.$fromid.' AND to_id = '.$toid.') OR (from_id = '.$toid.' AND to_id = '.$fromid.');';
+                    $messList = executeSelect($sql);
+                    foreach($messList as $mess){
+                        $sql = 'SELECT full_name FROM users where user_id = '.$mess['from_id'].';';
+                        $fromFullName = executeSelect($sql)[0]['full_name'];
+                        if($id_session == $mess['to_id']){
+                            echo '<div class="media w-50 mb-3">
+                                    <div class="media-body ml-3">
+                                        <label class="small text-muted">From '.$fromFullName.':</label>
+                                        <div class="bg-light rounded py-2 px-3 mb-2">    
+                                            <p class="text-small mb-0 text-muted">'.$mess['content'].'</p>
+                                        </div>
+                                        <p class="small text-muted">'.$mess['created_at'].'</p>
+                                    </div>
+                                </div>';
+                        }else if($id_session == $mess['from_id']){
+                            echo '<div class="media w-50 ml-auto mb-3">
+                                    <div class="media-body">
+                                        <div class="bg-primary rounded py-2 px-3 mb-2">
+                                            <p class="text-small mb-0 text-white">'.$mess['content'].'</p>
+                                        </div>
+                                        <p class="small text-muted">'.$mess['created_at'].'</p>
+                                    </div>
+                                </div>';
+                        }
+                    }
+                    ?>
+                </div>
+                <form action="" class="bg-light" method="POST">
+                    <div class="input-group">
+                    <input type="text" placeholder="Type a message" required name="content_message" class="form-control rounded-0 border-0 py-3 bg-light">
+                    <button class="btn btn-primary" type="submit" name="submit">Send</button>
                     </div>
                 </form>
             </div>
         </div>
+    </div>
 </div>
 </body>
 </html>

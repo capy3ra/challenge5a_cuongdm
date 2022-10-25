@@ -72,12 +72,13 @@
         <td>'.$urs['email'].'</td>
         <td>'.$urs['phone_number'].'</td>
         <td>'.$role.'</td>';
-        if($id_session != $urs['user_id']){
-            echo '<td><a href="messenger.php?toid='.$urs['user_id'].'&fromid='.$id_session.'"><button class="btn btn-primary">Chat</button></a></td>';
-        }
+        
         if($role_session == 2){
             echo '<td><a href="editUser.php?id='.$urs['user_id'].'"><button class="btn btn-warning">Edit</button></a></td>
         <td><a href="deleteUser.php?id='.$urs['user_id'].'"><button class="btn btn-danger">Delete</button></a></td>';
+        }
+        if($id_session != $urs['user_id']){
+            echo '<td><a href="messenger.php?toid='.$urs['user_id'].'&fromid='.$id_session.'"><button class="btn btn-primary">Chat</button></a></td>';
         }
     echo '</tr>';
     }

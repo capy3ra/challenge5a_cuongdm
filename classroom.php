@@ -55,12 +55,11 @@
                 if($ass['path'] == ''){
                     echo "<p>Not found file</p>";
                 }
-                $down = "uploads/".$ass['path'];
+                $down = "uploads/teacher/".$ass['path'];
                 echo '<div class="mb-3" style="border-radius: 5px;">
                     <h5 class="">'.$ass['title'].'
                     <small class="text-muted">'.$ass['created_at'].'</small>
                     </h5>
-                    
                     <label for="des" class="form-label">Description: </label>
                     <br/>
                     <textarea rows="5" cols="75" id="des" disabled>'.$ass['description'].'</textarea>

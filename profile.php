@@ -21,9 +21,7 @@
         $avatar = $_POST['avatar'];
         $sql = 'UPDATE users SET email = "'.$email.'", phone_number = "'.$phone_number.'", avatar = "'.$avatar.'" WHERE user_id = '.$id.';';
         execute($sql);
-        ?>
-        <script>alert("Success");</script>
-        <?php
+        header("Location: profile.php");
     }
 ?>
 

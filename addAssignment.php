@@ -27,17 +27,23 @@
 
         $allow_ext = ['png', 'jpg', 'jpeg', 'gif', 'ppt', 'zip', 'pptx' , 'doc', 'docx', 'xls', 'xlsx'];
         if(in_array($ext, $allow_ext)){
-            $handleFile = fopen($path.$filename, "a");
-            $upload = move_uploaded_file($file['tmp_name'], $path.$filename);
-            $title = $_POST['title'];
-            $description = $_POST['description'];
-            $sql = 'INSERT INTO assignment (title, description, path) VALUES ("'.$title.'", "'.$description.'", "'.$filename.'");';
-            execute($sql);
-            header("Location: classroom.php");
-            if(!$upload){
-                $error[] = 'upload_error';
+            if(file_exists('uploads/teacher/'.$filename)){
+                error['file_exists_error'];
             }
-            fclose($handleFile);
+            else{
+                if(!is_dir($path)){
+                    mkdir($path);
+                }
+                $upload = move_uploaded_file($file['tmp_name'], $path.$filename);
+                $title = $_POST['title'];
+                $description = $_POST['description'];
+                $sql = 'INSERT INTO assignment (title, description, path) VALUES ("'.$title.'", "'.$description.'", "'.$filename.'");';
+                execute($sql);
+                header("Location: classroom.php");
+                if(!$upload){
+                    $error[] = 'upload_error';
+                }
+            }
         }else{
             $error[] = 'ext_error';
         }
@@ -46,6 +52,9 @@
             $mess = '';
             if(in_array('ext_error', $error)){
                 $mess = "Invalid file";
+            }
+            else if(in_array('file_exists_error', $error)){
+                $mess = "File already exists";
             }
             else{
                 $mess = "Something is wrong";
