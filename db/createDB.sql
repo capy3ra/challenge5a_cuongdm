@@ -45,8 +45,5 @@ CREATE TABLE challenger(
 
 ---------------------------------------------------------------------
 
--- ALTER TABLE Assignment ADD FOREIGN KEY(assign_id) REFERENCES Submission(assign_id);
--- ALTER TABLE Submission ADD FOREIGN KEY(student_id) REFERENCES Users(user_id);
-
 
 -- INSERT INTO `users` (`user_id`, `full_name`, `username`, `password`, `avatar`, `email`, `phone_number`, `role_id`) VALUES (NULL, 'Do Manh Cuong', 'student1', 'f83e69e4170a786e44e3d32a2479cce9', 'avatardefault.jpg', 'cuong9cm@gmail.com', '094316245', '1')
