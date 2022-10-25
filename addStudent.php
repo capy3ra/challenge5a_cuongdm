@@ -25,7 +25,7 @@
         if ($full_name != '' && $password != '' && $email != '' && $username != '' && $phonenumber != '' && $role != '') {
             //save user into database
             $password = md5($password);
-            $sql = "insert into users (full_name, username, password, email, phone_number, role_id) values ('$full_name','$username' , '$password', '$email', '$phonenumber', '$role')";
+            $sql = "insert into users (full_name, username, password, email, phone_number, avatar, role_id) values ('$full_name','$username' , '$password', '$email', '$phonenumber', 'avatardefault.jpg','$role')";
             execute($sql);
             header('Location: listUser.php');
         }

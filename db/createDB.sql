@@ -36,6 +36,13 @@ CREATE TABLE messenger(
   created_at timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE challenger(
+  challenger_id int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  title varchar(255) NOT NULL,
+  path varchar(500) NOT NULL,
+  hint varchar(500) NOT NULL
+);
+
 ---------------------------------------------------------------------
 
 -- ALTER TABLE Assignment ADD FOREIGN KEY(assign_id) REFERENCES Submission(assign_id);
