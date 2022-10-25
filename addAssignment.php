@@ -27,6 +27,7 @@
 
         $allow_ext = ['png', 'jpg', 'jpeg', 'gif', 'ppt', 'zip', 'pptx' , 'doc', 'docx', 'xls', 'xlsx'];
         if(in_array($ext, $allow_ext)){
+            $handleFile = fopen($path.$filename, "a");
             $upload = move_uploaded_file($file['tmp_name'], $path.$filename);
             $title = $_POST['title'];
             $description = $_POST['description'];
@@ -36,6 +37,7 @@
             if(!$upload){
                 $error[] = 'upload_error';
             }
+            fclose($handleFile);
         }else{
             $error[] = 'ext_error';
         }
