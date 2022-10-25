@@ -55,7 +55,7 @@
                 if($ass['path'] == ''){
                     echo "<p>Not found file</p>";
                 }
-                $down = "uploads/teacher/".$ass['path'];
+                $down = "uploads/".$ass['path'];
                 echo '<div class="mb-3" style="border-radius: 5px;">
                     <h5 class="">'.$ass['title'].'
                     <small class="text-muted">'.$ass['created_at'].'</small>
