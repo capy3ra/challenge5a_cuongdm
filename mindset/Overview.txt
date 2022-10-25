@@ -1,0 +1,13 @@
+phân tích dự án
+- lúc 
+
+
+
+Admin(giáo viên):
+- giáo viên có thể thêm sửa, xóa sinh viên
+- giáo viên có thể tự thêm đổi thông tin cá nhân của mình
+- không có tính năng tạo giáo viên mới(mặc định là có 2 giáo viên teacher1, teacher2)
+- giáo viên có thế up bài tập lên(nên là trang Assignment)
+- giáo viên có thể truy nhập trang thông tin của tất cả sinh viên
+
+User(sinh viên):
